@@ -6,6 +6,7 @@ const cookieParser = require("cookie-parser");
 const connectDB = require("./config/connect");
 const authRouter = require("./routes/auth");
 const productRouter = require("./routes/product");
+const blogRouter = require("./routes/blog");
 const notFound = require("./middlewares/notFound");
 const errorHandler = require("./middlewares/errorHandler");
 const morgan = require("morgan");
@@ -18,6 +19,7 @@ app.use(cookieParser());
 //Routes
 app.use("/api/v1/auth", authRouter);
 app.use("/api/v1/product", productRouter);
+app.use("/api/v1/blog", blogRouter);
 
 //error handlers
 app.use(notFound);
