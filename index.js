@@ -7,6 +7,8 @@ const connectDB = require("./config/connect");
 const authRouter = require("./routes/auth");
 const productRouter = require("./routes/product");
 const blogRouter = require("./routes/blog");
+const categoryRouter = require("./routes/category");
+const blogCategoryRouter = require("./routes/blogCategory");
 const notFound = require("./middlewares/notFound");
 const errorHandler = require("./middlewares/errorHandler");
 const morgan = require("morgan");
@@ -20,6 +22,8 @@ app.use(cookieParser());
 app.use("/api/v1/auth", authRouter);
 app.use("/api/v1/product", productRouter);
 app.use("/api/v1/blog", blogRouter);
+app.use("/api/v1/category", categoryRouter);
+app.use("/api/v1/blogCategory", blogCategoryRouter);
 
 //error handlers
 app.use(notFound);
