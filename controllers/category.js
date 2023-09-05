@@ -2,6 +2,7 @@ const Category = require("../models/category");
 const asyncHandler = require("express-async-handler");
 const validateMongoId = require("../utils/validateMongoId");
 
+//Product category controller
 const createCategory = asyncHandler(async (req, res) => {
   try {
     const category = await Category.create(req.body);

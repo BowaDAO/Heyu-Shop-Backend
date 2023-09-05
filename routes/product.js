@@ -8,10 +8,14 @@ const {
   getAllProducts,
   updateProduct,
   deleteProduct,
+  addToWishList,
+  rating,
 } = require("../controllers/product");
 
 router.post("/createProduct", authentication, isAdmin, createProduct);
 router.get("/getAllProducts", getAllProducts);
+router.put("/wishlist", authentication, addToWishList);
+router.put("/rating", authentication, rating);
 router.get("/:id", getaProduct);
 router.put("/:id", authentication, isAdmin, updateProduct);
 router.delete("/:id", authentication, isAdmin, deleteProduct);
