@@ -1,9 +1,9 @@
 const Product = require("../models/product");
-const User = require("../models/user");
 const asyncHandler = require("express-async-handler");
 const slugify = require("slugify");
 const validateMongoId = require("../utils/validateMongoId");
 const cloudinaryUploadImage = require("../utils/cloudinary");
+const fs = require("fs");
 
 const createProduct = asyncHandler(async (req, res) => {
   try {
@@ -99,34 +99,6 @@ const deleteProduct = asyncHandler(async (req, res) => {
   }
 });
 
-//Function to add and remove product from wishlist.
-const addToWishList = asyncHandler(async (req, res) => {
-  const { _id } = req.user;
-  const { prodId } = req.body;
-  try {
-    const user = await User.findById(_id);
-    //Checking if the product has already been added
-    const alreadyAdded = user.wishlist.find((id) => id.toString() === prodId);
-    if (alreadyAdded) {
-      let user = await User.findByIdAndUpdate(
-        _id,
-        { $pull: { wishlist: prodId } },
-        { new: true }
-      );
-      res.json({ user });
-    } else {
-      let user = await User.findByIdAndUpdate(
-        _id,
-        { $push: { wishlist: prodId } },
-        { new: true }
-      );
-      res.json({ user });
-    }
-  } catch (error) {
-    throw new Error(error);
-  }
-});
-
 const rating = asyncHandler(async (req, res) => {
   const { _id } = req.user;
   const { star, prodId, comment } = req.body;
@@ -191,9 +163,10 @@ const uploadImages = asyncHandler(async (req, res) => {
     const urls = [];
     const files = req.files;
     for (const file of files) {
-      const { path } = files;
+      const { path } = file;
       const newPath = await uploader(path);
       urls.push(newPath);
+      fs.unlinkSync(path);
     }
     const product = await Product.findByIdAndUpdate(
       id,
@@ -216,6 +189,6 @@ module.exports = {
   getAllProducts,
   updateProduct,
   deleteProduct,
-  addToWishList,
   rating,
+  uploadImages,
 };

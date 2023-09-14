@@ -10,9 +10,19 @@ const {
   deleteBlog,
   likeBlog,
   dislikeBlog,
+  uploadImages,
 } = require("../controllers/blog");
+const { uploadPhoto, blogImageResize } = require("../middlewares/uploadImages");
 
 router.post("/createBlog", authentication, createBlog);
+router.put(
+  "/upload/:id",
+  authentication,
+  isAdmin,
+  uploadPhoto.array("images", 2),
+  blogImageResize,
+  uploadImages
+);
 router.get("/getAllBlogs", getAllBlogs);
 router.put("/like", authentication, likeBlog);
 router.put("/dislike", authentication, dislikeBlog);
