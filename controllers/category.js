@@ -28,6 +28,7 @@ const updateCategory = asyncHandler(async (req, res) => {
 const deleteCategory = asyncHandler(async (req, res) => {
   const { id } = req.params;
   validateMongoId(id);
+
   try {
     await Category.findByIdAndDelete(id);
     res.json({ message: "deleted successfully" });
@@ -35,9 +36,11 @@ const deleteCategory = asyncHandler(async (req, res) => {
     throw new Error(error);
   }
 });
+
 const getCategory = asyncHandler(async (req, res) => {
   const { id } = req.params;
   validateMongoId(id);
+
   try {
     const category = await Category.findById(id);
     res.json({ category });
@@ -45,6 +48,7 @@ const getCategory = asyncHandler(async (req, res) => {
     throw new Error(error);
   }
 });
+
 const getAllCategory = asyncHandler(async (req, res) => {
   try {
     const category = await Category.find();

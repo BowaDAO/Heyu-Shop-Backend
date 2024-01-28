@@ -6,11 +6,12 @@ const cloudinaryUploadImage = require("../utils/cloudinary");
 const fs = require("fs");
 
 const createProduct = asyncHandler(async (req, res) => {
+  const { name } = req.body;
   try {
-    if (req.body.name) {
-      req.body.slug = slugify(req.body.name);
+    if (name) {
+      req.body.slug = slugify(name);
     }
-    const product = await Product.create(req.body);
+    const product = await Product.create({ ...req.body });
     res.json({ product });
   } catch (error) {
     throw new Error(error);
@@ -32,8 +33,11 @@ const getAllProducts = asyncHandler(async (req, res) => {
     // Filtering products
     let queryObject = { ...req.query };
     const excludeFields = ["page", "sort", "limit", "fields"];
+
     excludeFields.forEach((item) => delete queryObject[item]);
+
     let numericQuery = JSON.stringify(queryObject);
+
     numericQuery = numericQuery.replace(
       /\b(gte|gt|lte|lt|eq)\b/g,
       (match) => `$${match}`
@@ -68,6 +72,7 @@ const getAllProducts = asyncHandler(async (req, res) => {
     }
 
     const products = await result;
+
     res.json({ products, nbHits: products.length });
   } catch (error) {
     throw new Error(error);

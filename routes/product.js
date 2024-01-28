@@ -20,7 +20,7 @@ router.post("/createProduct", authentication, isAdmin, createProduct);
 router.put(
   "/upload/:id",
   authentication,
-  // isAdmin,
+  isAdmin,
   uploadPhoto.array("images", 10),
   productImageResize,
   uploadImages

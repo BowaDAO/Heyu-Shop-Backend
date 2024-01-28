@@ -13,9 +13,11 @@ const createBlog = asyncHandler(async (req, res) => {
     throw new Error(error);
   }
 });
+
 const updateBlog = asyncHandler(async (req, res) => {
   const { id } = req.params;
   validateMongoId(id);
+
   try {
     const blog = await Blog.findByIdAndUpdate(id, req.body, { new: true });
     res.json({ blog });
@@ -27,6 +29,7 @@ const updateBlog = asyncHandler(async (req, res) => {
 const getBlog = asyncHandler(async (req, res) => {
   const { id } = req.params;
   validateMongoId(id);
+
   try {
     const blog = await Blog.findById(id).populate("likes").populate("dislikes");
     await Blog.findByIdAndUpdate(id, { $inc: { numViews: 1 } }, { new: true });

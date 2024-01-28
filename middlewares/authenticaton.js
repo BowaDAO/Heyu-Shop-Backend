@@ -7,6 +7,7 @@ const authentication = asyncHandler(async (req, res, next) => {
 
   if (authHeader && authHeader.startsWith("Bearer")) {
     const token = authHeader.split(" ")[1];
+
     try {
       const query = jwt.verify(token, process.env.JWT_SECRET);
       const user = await User.findById(query?.id);
